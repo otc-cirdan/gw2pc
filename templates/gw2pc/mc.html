@@ -3,7 +3,7 @@
 {% load gw2pc_tags %}
 
 {% block title %}Price Check on Mystic Coins{% endblock %}
-{% block metadesc %}As of {{ time }}, a Mystic Coin is worth about {{ mc_table.data.100buy.2500|format_gold_text }}{% endblock %}
+{% block metadesc %}As of {{ time }}, a Mystic Coin is worth about {{ table.data.100buy.2500|format_gold_text }}{% endblock %}
 {% block metatags %}price of Mystic Coins,value of Mystic Coins,guild wars 2{% endblock %}
 {% block extra_meta %}
     <link rel="canonical" href="https://gw2pc.com/mc/" />
@@ -13,9 +13,9 @@
     <p>Data valid as of {{ time }}</p>
     <div class="card-container single-result-card-container">
       <div class="mdc-card">
-        <h2 class="card-header">One Mystic Coin is worth about {{ mc_table.data.100buy.2500|format_gold }}</h2>
+        <h2 class="card-header">One Mystic Coin is worth about {{ table.data.100buy.2500|format_gold }}</h2>
         <ul>
-          <li>That's about {{ mc_table.data.100buy.2500|multiply:250|format_gold }} per stack.</li>
+          <li>That's about {{ table.data.100buy.2500|multiply:250|format_gold }} per stack.</li>
           <li>This is based on 100% of the buy price at a depth of 2500.</li>
           <li>Mystic Coins don't follow the standard rule of 90% of sell price. Their steady supply means that players can readily acquire them from the trading post by paying slightly above the current buy order, and their high demand in crafting means that players will rarely let them go for less than that.</li>
           <li>We use a depth of 2500 to ignore small bidding wars and find the first large "wall". Normally, small overcuts will clear very quickly, allowing Mystic Coins to be acquired at very close to the price listed here.</li>
@@ -24,7 +24,7 @@
       </div>
       <div class="mdc-card">
         <h2 class="card-header">Mystic Coin Prices</h2>
-        {% include 'includes/table.html' with table=mc_table %}
+        {% include 'includes/table.html' with table=table %}
       </div>
     </div>
 {% endblock %}

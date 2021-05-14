@@ -34,7 +34,7 @@ urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + 
          TemplateView.as_view(template_name="gw2pc/robots.txt"),
          name='robots.txt'),
     path('',
-         views.gw2pc_homepage,
+         TemplateView.as_view(template_name="gw2pc/homepage.html"),
          name='gw2pc_homepage'),
     # Ugly re_path URLs are basically required here because APPEND_SLASH just
     # straight up doesn't work with zappa, so we either need two `path` urls
@@ -43,10 +43,10 @@ urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + 
          views.gw2pc_t6,
          name='gw2pc_t6'),
     re_path('^mc/?$',
-         views.gw2pc_mc,
+         views.MCView.as_view(),
          name='gw2pc_mc'),
     re_path('^ecto/?$',
-         views.gw2pc_ecto,
+         views.EctoView.as_view(),
          name='gw2pc_ecto'),
     re_path('^leg/?$',
          views.gw2pc_leg,

@@ -1,19 +1,7 @@
 from django.shortcuts import render
 from django.utils import timezone
+from django.views import View
 from gw2pc.utils import get_tradingpost_api
-
-
-def gw2pc_homepage(request):
-    # Homepage.
-
-    context = {
-    }
-
-    return render(
-        request,
-        'gw2pc/homepage.html',
-        context,
-    )
 
 
 def gw2pc_t6(request):
@@ -95,96 +83,65 @@ def gw2pc_t6(request):
     )
 
 
-def gw2pc_mc(request):
-    # Mystic Coins
-    context = {}
-    context['time'] = timezone.now()
+class SingleItemView(View):
+    depths = (1, 250, 1000, 2500, 10000)
+    ratios = (('buy', 100), ('sell', 85), ('sell', 90), ('sell', 100))
+    hilight_ratio = '90sell'
+    hilight_depth = 2500
+    include_stack = True
 
+    def get(self, request, *args, **kwargs):
+        context = {}
+        context['time'] = timezone.now()
+
+        api_data = get_tradingpost_api([self.item_id])
+
+        data = {}
+        for buysell, percent in self.ratios:
+            data[f'{percent}{buysell}'] = {}
+            for depth in self.depths:
+                if buysell == 'buy':
+                    price = api_data[self.item_id].get_buy_price(depth)
+                else:
+                    price = api_data[self.item_id].get_sell_price(depth)
+                data[f'{percent}{buysell}'][depth] = price * (percent / 100)
+        table = {
+            'r1c1': {
+                'content': 'Depth',
+            },
+            'columns': [
+                {'key': f"{percent}{buysell}",
+                 'content': f"{percent}% {buysell.title()}"}
+                for buysell, percent in self.ratios
+            ],
+            'rows': [{'content': x, 'key': x} for x in self.depths],
+            'hilight_cols': [self.hilight_ratio],
+            'hilight_rows': [self.hilight_depth],
+            'data': data,
+            'include_stack': self.include_stack,
+        }
+
+        context['table'] = table
+
+        return render(
+            request,
+            self.template_name,
+            context,
+        )
+
+
+class MCView(SingleItemView):
     item_id = 19976
-    api_data = get_tradingpost_api([item_id])
-
-    mc_data = {}
-    mc_depths = (1, 250, 1000, 2500, 10000)
-    for buysell, percent in (('buy', 100), ('sell', 85), ('sell', 90), ('sell', 100)):
-        mc_data[f'{percent}{buysell}'] = {}
-        for depth in mc_depths:
-            if buysell == 'buy':
-                price = api_data[item_id].get_buy_price(depth)
-            else:
-                price = api_data[item_id].get_sell_price(depth)
-            mc_data[f'{percent}{buysell}'][depth] = price * (percent / 100)
-    mc_table = {
-        'r1c1': {
-            'content': 'Depth',
-        },
-        'columns': [
-            { 'key': '100buy', 'content': '100% Buy', },
-            { 'key': '85sell', 'content': '85% Sell', },
-            { 'key': '90sell', 'content': '90% Sell', },
-            { 'key': '100sell', 'content': '100% Sell', },
-        ],
-        'rows': [{'content': x, 'key': x} for x in mc_depths],
-        'hilight_cols': ['100buy'],
-        'hilight_rows': [2500],
-        'data': mc_data,
-        'include_stack': True,
-    }
+    template_name = 'gw2pc/mc.html'
+    hilight_ratio = '100buy'
 
 
-    context['mc_table'] = mc_table
-    context['mc_data'] = mc_data
-
-    return render(
-        request,
-        'gw2pc/mc.html',
-        context,
-    )
-
-
-def gw2pc_ecto(request):
-    # Ectos
-    context = {}
-    context['time'] = timezone.now()
-
+class EctoView(SingleItemView):
     item_id = 19721
-    api_data = get_tradingpost_api([item_id])
+    template_name = 'gw2pc/ecto.html'
+    depths = (1, 500, 1000, 2000, 3000, 4000, 5000)
+    hilight_depth = 2000
 
-    ecto_data = {}
-    ecto_depths = (1, 500, 1000, 2000, 3000, 4000, 5000)
-    for buysell, percent in (('buy', 100), ('sell', 85), ('sell', 90), ('sell', 100)):
-        ecto_data[f'{percent}{buysell}'] = {}
-        for depth in ecto_depths:
-            if buysell == 'buy':
-                price = api_data[item_id].get_buy_price(depth)
-            else:
-                price = api_data[item_id].get_sell_price(depth)
-            ecto_data[f'{percent}{buysell}'][depth] = price * (percent / 100)
-    ecto_table = {
-        'r1c1': {
-            'content': 'Depth',
-        },
-        'columns': [
-            { 'key': '100buy', 'content': '100% Buy', },
-            { 'key': '85sell', 'content': '85% Sell', },
-            { 'key': '90sell', 'content': '90% Sell', },
-            { 'key': '100sell', 'content': '100% Sell', },
-        ],
-        'rows': [{'content': x, 'key': x} for x in ecto_depths],
-        'hilight_cols': ['90sell'],
-        'hilight_rows': [2000],
-        'data': ecto_data,
-        'include_stack': True,
-    }
-
-
-    context['ecto_table'] = ecto_table
-    context['ecto_data'] = ecto_data
-
-    return render(
-        request,
-        'gw2pc/ecto.html',
-        context,
-    )
 
 def gw2pc_leg(request):
     # Legendary Weapons.
