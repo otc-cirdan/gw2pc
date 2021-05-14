@@ -1,6 +1,4 @@
-import pytz
-from dateutil import parser
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.utils import timezone
 from gw2pc.utils import get_tradingpost_api
 

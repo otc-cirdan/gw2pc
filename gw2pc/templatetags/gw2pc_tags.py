@@ -32,7 +32,6 @@ def format_gold_text(value):
 def format_gold_text_gs(value):
     if not value:
         value = 0
-    copper = int(value % 100)
     value = round(value/100)
     silver = int(value % 100)
     value = (value - silver)/100
@@ -48,7 +47,6 @@ def format_gold_text_gs(value):
 def getitem(dictionary, key):
     return dictionary.get(key)
 
-@register.simple_tag
 def pctable_cell_classes(table, row=None, column=None):
     classes = []
     if 'hilight_rows' in table and row and row['key'] in table['hilight_rows']:
