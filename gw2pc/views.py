@@ -83,6 +83,31 @@ def gw2pc_t6(request):
     )
 
 
+def single_item_table(api_data, item_id, ratios, depths):
+    data = {}
+    for buysell, percent in ratios:
+        data[f'{percent}{buysell}'] = {}
+        for depth in depths:
+            if buysell == 'buy':
+                price = api_data[item_id].get_buy_price(depth)
+            else:
+                price = api_data[item_id].get_sell_price(depth)
+            data[f'{percent}{buysell}'][depth] = price * (percent / 100)
+    table = {
+        'r1c1': {
+            'content': 'Depth',
+        },
+        'columns': [
+            {'key': f"{percent}{buysell}",
+                'content': f"{percent}% {buysell.title()}"}
+            for buysell, percent in ratios
+        ],
+        'rows': [{'content': x, 'key': x} for x in depths],
+        'data': data,
+    }
+    return table
+
+
 class SingleItemView(View):
     depths = (1, 250, 1000, 2500, 10000)
     ratios = (('buy', 100), ('sell', 85), ('sell', 90), ('sell', 100))
@@ -96,30 +121,10 @@ class SingleItemView(View):
 
         api_data = get_tradingpost_api([self.item_id])
 
-        data = {}
-        for buysell, percent in self.ratios:
-            data[f'{percent}{buysell}'] = {}
-            for depth in self.depths:
-                if buysell == 'buy':
-                    price = api_data[self.item_id].get_buy_price(depth)
-                else:
-                    price = api_data[self.item_id].get_sell_price(depth)
-                data[f'{percent}{buysell}'][depth] = price * (percent / 100)
-        table = {
-            'r1c1': {
-                'content': 'Depth',
-            },
-            'columns': [
-                {'key': f"{percent}{buysell}",
-                 'content': f"{percent}% {buysell.title()}"}
-                for buysell, percent in self.ratios
-            ],
-            'rows': [{'content': x, 'key': x} for x in self.depths],
-            'hilight_cols': [self.hilight_ratio],
-            'hilight_rows': [self.hilight_depth],
-            'data': data,
-            'include_stack': self.include_stack,
-        }
+        table = single_item_table(api_data, self.item_id, self.ratios, self.depths)
+        table['hilight_cols'] = [self.hilight_ratio]
+        table['hilight_rows'] = [self.hilight_depth]
+        table['include_stack'] = self.include_stack
 
         context['table'] = table
 
