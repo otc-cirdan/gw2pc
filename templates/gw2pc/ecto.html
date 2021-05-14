@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load gw2pc_tags %}
+
+{% block title %}Price Check on Ectos{% endblock %}
+{% block metadesc %}As of {{ time }}, Ectos are worth about {{ ecto_table.data.90sell.2000|format_gold_text }} each, or {{ ecto_table.data.90sell.2000|multiply:250|format_gold_text }} per stack.{% endblock %}
+{% block metatags %}price of Ectos,value of Ectos,Globs of Ectoplasm,guild wars 2{% endblock %}
+{% block extra_meta %}
+    <link rel="canonical" href="https://gw2pc.com/ecto/" />
+{% endblock %}
+{% block content_title %}Price Check on Ectos{% endblock %}
+{% block content %}
+    <p>Data valid as of {{ time }}</p>
+    <div class="card-container single-result-card-container">
+      <div class="mdc-card">
+        <h2 class="card-header">One Glob of Ectoplasm is worth about {{ ecto_table.data.90sell.2000|format_gold }}</h2>
+        <ul>
+          <li>That's about {{ ecto_table.data.90sell.2000|multiply:250|format_gold }} per stack.</li>
+          <li>This is based on 90% of the sell price at a depth of 2000.</li>
+          <li>As with most frequently traded items, Ectos are valued at about 90% of the lowest sell listing.</li>
+          <li>We use a depth of 2000 to ignore small bidding wars and find the first large "wall". Normally, small undercuts will clear quickly.</li>
+          <li>However, be aware that this price is highly susceptible to fluctuations and manipulation, especially undercuts. Ensure that it is relatively stable by checking <a href="https://www.gw2bltc.com/en/item/19721">GW2BLTC</a>.</li>
+          <li>When looking at the sell price graph on GW2BLTC, you want the high point that the graph consistently returns to (which is the true resistance level), not the temporary lower spikes (which are caused by small undercuts).</li>
+          <li>See <a href="/docs/">our about prices page</a> for more information about item valuations.</li>
+        </ul>
+      </div>
+      <div class="mdc-card">
+        <h2 class="card-header">Ecto Prices</h2>
+        {% include 'includes/table.html' with table=ecto_table %}
+      </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}About GW2PC Price Check Information{% endblock %}
+{% block metadesc %}Guild Wars 2 Price Check is a service providing real-time price estimates for items common in player-to-player trading.{% endblock %}
+{% block metatags %}guild wars 2 price check,guild wars 2 economy,guild wars 2 trading{% endblock %}
+{% block content_title %}About GW2PC Price Check Information{% endblock %}
+{% block content %}
+  <h2>The Basis of 90% Sell</h2>
+  <p>Many items are traded at 90% of the lowest sell listing, which traders may refer to as "90% sell", "90% lowest listing", or just "90%". This is based on the trading post's tax system. If you want to buy an item straight away, you
+  would pay 100% of the sell listing, but the seller would only get 85% of that after taxes. For the direct player-to-player trading that avoids taxes, 90% was chosen as a common middle ground. Technically 92.5% would be the best
+  middle ground, but 90% is much easier to calculate, and the difference doesn't really matter over the long term. In particular, if you're trading items that are valued at 90% on both sides, you'll wind up with the same trade as if
+  both items were valued at 92.5% - 90% is just easier to calculate. For the rare transaction that uses raw gold, 90% of sell price is still more gold than you would get from the trading post, so you are still getting a good deal.</p>
+
+  <h2>Items priced below 90%</h2>
+  <p>Some items are routinely priced below 90% of TP Sell price. The most notable example is legendary weapons, which routinely trade at 85% Sell. This is because most players who buy legendary weapons with the intent of equipping
+  them will buy them from the trading post, so the best-case scenario for liquidating that weapon is that you get 85% after the trading post taxes. Players will occasionally offer a bit more for "meta" weapons - those which are the most
+  popular - but this rarely exceeds 87%.</p>
+  <p>Some other items, including precursor weapons, infusions, and contracts, can sell at below 90% for similar reasons. Infusions and contracts in particular are best priced by looking at recent trade reviews on the Overflow discord,
+  while precursors will generally sell for somewhere between TP Buy and 90% TP Sell.</p>
+
+  <h2>Items priced above 90%</h2>
+  <p>Some high-demand items may be priced above 90% Sell. For example, unidentified gear often sells for 95% of TP Sell, and items that can easily be converted to gold (such as Fractal Encryptions and Divine Lucky Envelopes) often
+  sell at a fixed price that is slightly lower than the average value of their contents.</p>
+
+  <h2>Other bases for pricing</h2>
+  <p>Mystic Coins are an item with very high demand due to their use in crafting, but also a steady supply from daily login rewards and Ley-Line Anomaly, and so they generally sell for roughly TP Buy price. For more discussion on
+  this, see the <a href="/mc/">Mystic Coins page</a>.</p>
+
+  <h2>Unexpected prices</h2>
+  <p>The prices on this service are generally calculated using the Guild Wars 2 Trading Post. If you're getting a weird or surprising price, it may be because of short-term market changes, usually either a sudden but temporary
+  influx of supply or high demand. For example, Vicious Claws drop frequently from Dragon Response Missions, which tends to push the price down every time a new DRM or related event is released. In extreme cases, this can cause our
+  price of a T6 set to drop significantly. Whether you choose to trade at this new price is between you and your counterparty: On the one hand, the sudden increase in supply has legitimately caused the price of T6 claws to drop. On
+  the other hand, it is reasonable to assume that the price will quickly rebound once the event is over for a few days.</p>
+  <p>One of the best ways to validate a price is to search through trade reviews on the Overflow Trading Company discord. This will give you a good idea of how that item has sold recently. Beware of price changes immediately after an
+  update, as prices can shift due to new supply or demand. It's always helpful to read the patch notes!</p>
+
+  <h2>Depth and resistance</h2>
+  <p>If you're familiar with trading stocks or currencies, you've probably seen a depth chart. It is a graph with price on the x-axis, and number of orders on the y-axis. Two lines or shaded areas represent the buy orders (on the
+  left) and the sell orders (on the right), and they meet in the middle. The slope of the line represents the resistance at that price - the number of orders that need to be filled in order to move the price by one copper. I haven't
+  found a website that shows decent depth charts for GW2, but you can get the same information by looking down the list of orders in the Trading Post or on GW2BLTC. If you see a huge quantity of orders, say, tens of thousands at or
+  close to the same price, that's a heavy resistance level. If the quantities are smaller and the prices are more spread out, then there is less resistance.</p>
+  <p>High resistance is a sign that the price is unlikely to move past a given point. For example, Mystic Coins tend to have a very high level of resistance on the buy order side, which means that despite the steady supply, the price
+  is unlikely to move down, as all of those orders would need to be either filled or cancelled. On the other hand, low resistance means that changes in supply and demand can easily move the price. This can indicate a good opportunity
+  to reprice an item, or to invest in an item in the hopes that a future update will increase demand for it.</p>
+  <p>When trying to find a stable price for an item like a T6 set or an Ecto, we generally want to find a price point at which there is some resistance. It's very common to see a sell order for a very small quantity, placed way below
+  the rest of the sell orders. This can happen when someone wants to sell an item fast, or it can happen accidentally when multiple people try to fill the same buy order at the same time. This does not represent a significant change
+  in the item's trade value, so we want to ignore those when quoting a price. This is why many of our valuations are based on a depth of 250 or more. Rather than looking at the cheapest item on the market, we look at the
+  250th-cheapest.</p>
+  <p>Of course, the needed depth depends on the item in question. For legendary weapons, with their significantly lower volume, if you have more than a couple of weapons at a certain price point, it stops being an undercut and starts
+  being a price dip. This is because it could take days or weeks for those sell orders to clear, especially if more weapons are being listed at that lower price (as they often are). A buyer might be willing to overlook 1-2 weapons
+  posted 100g below your target price, but they won't be willing to overlook 5-10. On the other hand, you can have someone list 100 of each T6 mat at 1 copper above the buy price, and it won't affect the going rate for T6 sets, because
+  traders know that those orders will clear quickly.</p>
+{% endblock %}
+

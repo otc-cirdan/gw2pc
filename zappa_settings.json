@@ -1,0 +1,35 @@
+{
+    "dev": {
+        "aws_region": "us-west-2",
+        "django_settings": "gw2pc.dev_settings",
+        "profile_name": "default",
+        "project_name": "gw2pc",
+        "runtime": "python3.6",
+        "domain": "dev.gw2pc.com",
+        "aws_environment_variables": {
+            "HOME": "/tmp",
+        },
+    }
+    "staging": {
+        "aws_region": "us-west-2",
+        "django_settings": "gw2pc.staging_settings",
+        "profile_name": "default",
+        "project_name": "gw2pc",
+        "runtime": "python3.6",
+        "domain": "staging.gw2pc.com",
+        "aws_environment_variables": {
+            "HOME": "/tmp",
+        },
+    }
+    "prod": {
+        "aws_region": "us-west-2",
+        "django_settings": "gw2pc.prod_settings",
+        "profile_name": "default",
+        "project_name": "gw2pc",
+        "runtime": "python3.6",
+        "domain": "gw2pc.com",
+        "aws_environment_variables": {
+            "HOME": "/tmp",
+        },
+    }
+}

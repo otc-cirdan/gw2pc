@@ -1,0 +1,31 @@
+{% load humanize %}
+{% load gw2pc_tags %}
+
+<table class="price-table">
+  <thead>
+    <th>{{ table.r1c1.content }}</th>
+    {% for column in table.columns %}
+      <th class="{% pctable_cell_classes table=table column=column %}">{{ column.content }}</th>
+    {% endfor %}
+  </thead>
+  <tbody>
+    {% for row in table.rows %}
+      <tr>
+        <td class="{% pctable_cell_classes table=table row=row %}">
+          {% if table.row_link %}
+            {% if table.row_link == "gw2bltc" %}
+              <a href="https://www.gw2bltc.com/en/item/{{ row.key }}">
+            {% endif %}
+          {% endif %}
+          {{ row.content }}
+          {% if table.row_link %}
+            </a>
+          {% endif %}
+        </td>
+        {% for column in table.columns %}
+          {% render_cell table row column %}
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

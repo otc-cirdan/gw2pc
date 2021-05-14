@@ -1,0 +1,113 @@
+$primary: #002d54;
+@use "@material/theme" with (
+  $primary: #002d54,
+  $secondary: #feeae6,
+  $on-primary: #442b2d,
+  $on-secondary: #442b2d,
+);
+
+@use "material-components-web";
+@use "@material/button/mdc-button";
+@use "@material/textfield/mdc-text-field";
+@use "@material/card/mdc-card";
+
+html {
+  width: 100%;
+  height: 100%;
+  background-color: rgba($primary, 0.2);
+}
+
+h1, h2, h3 {
+  font-family: Roboto, sans-serif;
+  color: var(--mdc-theme-primary);
+  a:link, a:visited {
+    color: var(--mdc-theme-primary);
+    text-decoration: none;
+  }
+}
+
+nav {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+div#content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  div#main-content {
+    flex: 1 1 auto;
+    max-width: 80%;
+  }
+}
+
+form.search-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 2em 2em 0;
+  padding: 1em 1em 1em 1em;
+  div.field-container {
+    flex: 1 1 auto;
+    padding: 10px;
+    display: flex;
+    div.mdc-text-field {
+      flex: 1 1 auto;
+    }
+  }
+}
+
+div.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  div.mdc-card {
+    flex: 0 1 auto;
+    width: 20em;
+    margin: 0 2em 2em 0;
+    padding: 0 1em 1em 1em;
+  }
+}
+
+div.single-result-card-container, div.debug-card-container {
+  justify-content: center;
+
+  div.mdc-card {
+    width: 40%;
+  }
+  div.mdc-card-wide {
+    width: 70%;
+  }
+}
+
+table.price-table {
+  width: 90%;
+  .price-table-price {
+    text-align: right;
+  }
+  .price-table-hilight-row, .price-table-hilight-col {
+    background-color: rgba($primary, .2);
+  }
+  .price-table-hilight-row.price-table-hilight-col {
+    background-color: rgba($primary, .4);
+  }
+}
+
+
+@media only screen and (max-width: 1280px) {
+  div#content {
+    div#main-content {
+      max-width: 100%;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  div.single-result-card-container, div.debug-card-container {
+    div.mdc-card {
+      width: 90%;
+    }
+  }
+}
