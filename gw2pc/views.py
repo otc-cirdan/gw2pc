@@ -90,16 +90,19 @@ class DepthRatioTable():
         self.ratios = ratios
         self.depths = depths
 
+    def get_price(self, buysell, depth, percent):
+        if buysell == 'buy':
+            price = self.api_data[self.item_id].get_buy_price(depth)
+        else:
+            price = self.api_data[self.item_id].get_sell_price(depth)
+        return price * (percent / 100)
+
     def get_table(self):
         data = {}
         for buysell, percent in self.ratios:
             data[f'{percent}{buysell}'] = {}
             for depth in self.depths:
-                if buysell == 'buy':
-                    price = self.api_data[self.item_id].get_buy_price(depth)
-                else:
-                    price = self.api_data[self.item_id].get_sell_price(depth)
-                data[f'{percent}{buysell}'][depth] = price * (percent / 100)
+                data[f'{percent}{buysell}'][depth] = self.get_price(buysell, depth, percent)
         table = {
             'r1c1': {
                 'content': 'Depth',
