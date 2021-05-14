@@ -13,6 +13,12 @@ class ItemInfo(object):
     def get_sell_price(self, depth=1):
         return self._get_price(self.sells, depth=depth)
 
+    def get_price(self, depth=1, buysell='sell'):
+        if buysell == 'buy':
+            return self.get_buy_price(depth=depth)
+        else:
+            return self.get_sell_price(depth=depth)
+
     def _get_price(self, data, depth):
         current_price = None
         items_seen = 0

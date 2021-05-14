@@ -4,6 +4,51 @@ from django.views import View
 from gw2pc.utils import get_tradingpost_api
 
 
+class DepthRatioTable():
+    def __init__(self, api_data=None, item_id=None, ratios=None, depths=None, *args, **kwargs):
+        self.api_data = api_data
+        self.item_id = item_id
+        self.ratios = ratios
+        self.depths = depths
+
+    def get_price(self, buysell, depth, percent):
+        price = self.api_data[self.item_id].get_price(depth, buysell)
+        return price * (percent / 100)
+
+    def get_table(self):
+        data = {}
+        for buysell, percent in self.ratios:
+            data[f'{percent}{buysell}'] = {}
+            for depth in self.depths:
+                data[f'{percent}{buysell}'][depth] = self.get_price(buysell, depth, percent)
+        table = {
+            'r1c1': {
+                'content': 'Depth',
+            },
+            'columns': [
+                {'key': f"{percent}{buysell}",
+                    'content': f"{percent}% {buysell.title()}"}
+                for buysell, percent in self.ratios
+            ],
+            'rows': [{'content': x, 'key': x} for x in self.depths],
+            'data': data,
+        }
+        return table
+
+
+class MultiItemDepthRatioTable(DepthRatioTable):
+    def __init__(self, item_ids=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.item_ids = item_ids
+
+    def get_price(self, buysell, depth, percent):
+        price = 0
+        for item_id in self.item_ids:
+            itemprice = self.api_data[item_id].get_price(depth, buysell)
+            price += itemprice * (percent / 100) * 250
+        return price
+
+
 def gw2pc_t6(request):
     # T6 set.
     context = {}
@@ -43,37 +88,16 @@ def gw2pc_t6(request):
     }
     context['t6_item_table'] = t6_item_table
 
-    t6_set_data = {}
-    for buysell, percent in (('buy', 100), ('sell', 85), ('sell', 90), ('sell', 100)):
-        t6_set_data[f'{percent}{buysell}'] = {}
-        for depth in t6_item_depths:
-            price = 0
-            for item in t6_items.values():
-                if buysell == 'buy':
-                    itemprice = api_data[item].get_buy_price(depth)
-                else:
-                    itemprice = api_data[item].get_sell_price(depth)
-                price += itemprice * (percent / 100) * 250
-            t6_set_data[f'{percent}{buysell}'][depth] = price
-    t6_set_table = {
-        'r1c1': {
-            'content': 'Depth',
-        },
-        'columns': [
-            { 'key': '100buy', 'content': '100% Buy', },
-            { 'key': '85sell', 'content': '85% Sell', },
-            { 'key': '90sell', 'content': '90% Sell', },
-            { 'key': '100sell', 'content': '100% Sell', },
-        ],
-        'rows': [{'content': x, 'key': x} for x in t6_item_depths],
-        'hilight_cols': ['90sell'],
-        'hilight_rows': [250],
-        'data': t6_set_data,
-    }
-
+    ratios = (('buy', 100), ('sell', 85), ('sell', 90), ('sell', 100))
+    t6_set_table = MultiItemDepthRatioTable(api_data=api_data,
+                                            item_ids=t6_items.values(),
+                                            ratios=ratios,
+                                            depths=t6_item_depths).get_table()
+    t6_set_table['hilight_cols'] = ['90sell']
+    t6_set_table['hilight_rows'] = [250]
+    t6_set_table['include_stack'] = False
 
     context['t6_set_table'] = t6_set_table
-    context['t6_set_data'] = t6_set_data
     context['t6_set_types'] = ('100buy', '85sell', '90sell', '100sell')
 
     return render(
@@ -81,41 +105,6 @@ def gw2pc_t6(request):
         'gw2pc/t6.html',
         context,
     )
-
-
-class DepthRatioTable():
-    def __init__(self, api_data, item_id, ratios, depths):
-        self.api_data = api_data
-        self.item_id = item_id
-        self.ratios = ratios
-        self.depths = depths
-
-    def get_price(self, buysell, depth, percent):
-        if buysell == 'buy':
-            price = self.api_data[self.item_id].get_buy_price(depth)
-        else:
-            price = self.api_data[self.item_id].get_sell_price(depth)
-        return price * (percent / 100)
-
-    def get_table(self):
-        data = {}
-        for buysell, percent in self.ratios:
-            data[f'{percent}{buysell}'] = {}
-            for depth in self.depths:
-                data[f'{percent}{buysell}'][depth] = self.get_price(buysell, depth, percent)
-        table = {
-            'r1c1': {
-                'content': 'Depth',
-            },
-            'columns': [
-                {'key': f"{percent}{buysell}",
-                    'content': f"{percent}% {buysell.title()}"}
-                for buysell, percent in self.ratios
-            ],
-            'rows': [{'content': x, 'key': x} for x in self.depths],
-            'data': data,
-        }
-        return table
 
 
 class SingleItemView(View):
@@ -131,7 +120,10 @@ class SingleItemView(View):
 
         api_data = get_tradingpost_api([self.item_id])
 
-        table = DepthRatioTable(api_data, self.item_id, self.ratios, self.depths).get_table()
+        table = DepthRatioTable(api_data=api_data,
+                                item_id=self.item_id,
+                                ratios=self.ratios,
+                                depths=self.depths).get_table()
         table['hilight_cols'] = [self.hilight_ratio]
         table['hilight_rows'] = [self.hilight_depth]
         table['include_stack'] = self.include_stack

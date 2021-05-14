@@ -81,7 +81,7 @@ def render_cell(table, row, column):
 
     response = f"<td class='{classes}'>\n"
     response += f"{format_gold_function(cell_val)}\n"
-    if 'include_stack' in table:
+    if 'include_stack' in table and table['include_stack']:
         response += f"<br />{format_gold_function(cell_val*250)}\n"
     response += "</td>"
     return mark_safe(response)
