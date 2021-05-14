@@ -47,6 +47,7 @@ def format_gold_text_gs(value):
 def getitem(dictionary, key):
     return dictionary.get(key)
 
+@register.simple_tag
 def pctable_cell_classes(table, row=None, column=None):
     classes = []
     if 'hilight_rows' in table and row and row['key'] in table['hilight_rows']:
