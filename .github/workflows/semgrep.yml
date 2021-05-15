@@ -1,8 +1,9 @@
 on:
-  pull_request: {}
+  pull_request:
+    branches:
+    - master
   push:
     branches:
-    - main
     - master
 name: Semgrep
 jobs:
@@ -16,3 +17,10 @@ jobs:
         auditOn: push
         publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
         publishDeployment: 1167
+        generateSarif: "1"
+
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: semgrep.sarif
+      if: always()
