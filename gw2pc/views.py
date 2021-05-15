@@ -36,7 +36,7 @@ class DepthRatioTable():
         return table
 
 
-class MultiItemDepthRatioTable(DepthRatioTable):
+class MultiItemSetDepthRatioTable(DepthRatioTable):
     def __init__(self, item_ids=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.item_ids = item_ids
@@ -49,62 +49,29 @@ class MultiItemDepthRatioTable(DepthRatioTable):
         return price
 
 
-def gw2pc_t6(request):
-    # T6 set.
-    context = {}
-    context['time'] = timezone.now()
+class MultiItemSetItemDepthTable(DepthRatioTable):
+    def __init__(self, items_tuples=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.items_tuples = items_tuples
+        self.item_ids = [x[1] for x in items_tuples]
 
-    t6_items_tuples = (
-        ('Blood',  24295),
-        ('Bones',  24358),
-        ('Claws',  24351),
-        ('Dust',   24277),
-        ('Fangs',  24357),
-        ('Scales', 24289),
-        ('Totems', 24300),
-        ('Venom',  24283),
-    )
-    t6_items = {k:v for k,v in t6_items_tuples}
-    context['t6_items_tuples'] = t6_items_tuples
-    api_data = get_tradingpost_api(t6_items.values())
-
-    t6_item_data = {}
-    t6_item_depths = (1, 100, 250, 1000, 5000)
-    max_item_depth = 5000
-    for item in t6_items.values():
-        t6_item_data[item] = {}
-        for depth in t6_item_depths:
-            t6_item_data[item][depth] = api_data[item].get_sell_price(depth)
-    t6_item_table = {
-        'r1c1': {
-            'content': 'Item',
-        },
-        'columns': [{'key': x, 'content': f'Depth {x}'} for x in (t6_item_depths) if x <= max_item_depth],
-        'rows': [{'content': e1, 'key': e2} for e1,e2 in t6_items_tuples],
-        'hilight_cols': [250],
-        'data': t6_item_data,
-        'row_first': True,
-        'row_link': 'gw2bltc',
-    }
-    context['t6_item_table'] = t6_item_table
-
-    ratios = (('buy', 100), ('sell', 85), ('sell', 90), ('sell', 100))
-    t6_set_table = MultiItemDepthRatioTable(api_data=api_data,
-                                            item_ids=t6_items.values(),
-                                            ratios=ratios,
-                                            depths=t6_item_depths).get_table()
-    t6_set_table['hilight_cols'] = ['90sell']
-    t6_set_table['hilight_rows'] = [250]
-    t6_set_table['include_stack'] = False
-
-    context['t6_set_table'] = t6_set_table
-    context['t6_set_types'] = ('100buy', '85sell', '90sell', '100sell')
-
-    return render(
-        request,
-        'gw2pc/t6.html',
-        context,
-    )
+    def get_table(self):
+        data = {}
+        for item in self.item_ids:
+            data[item] = {}
+            for depth in self.depths:
+                data[item][depth] = self.api_data[item].get_sell_price(depth)
+        table = {
+            'r1c1': {
+                'content': 'Item',
+            },
+            'columns': [{'key': x, 'content': f'Depth {x}'} for x in (self.depths)],
+            'rows': [{'content': e1, 'key': e2} for e1,e2 in self.items_tuples],
+            'data': data,
+            'row_first': True,
+            'row_link': 'gw2bltc',
+        }
+        return table
 
 
 class SingleItemView(View):
@@ -114,21 +81,33 @@ class SingleItemView(View):
     hilight_depth = 2500
     include_stack = True
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        context['time'] = timezone.now()
-
-        api_data = get_tradingpost_api([self.item_id])
-
-        table = DepthRatioTable(api_data=api_data,
+    def init_table(self):
+        table = DepthRatioTable(api_data=self.api_data,
                                 item_id=self.item_id,
                                 ratios=self.ratios,
-                                depths=self.depths).get_table()
+                                depths=self.depths)
+        return table
+
+    def get_api_data(self):
+        self.api_data = get_tradingpost_api([self.item_id])
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        context['time'] = timezone.now()
+        self.get_api_data()
+
+        table = self.init_table().get_table()
+
         table['hilight_cols'] = [self.hilight_ratio]
         table['hilight_rows'] = [self.hilight_depth]
         table['include_stack'] = self.include_stack
 
         context['table'] = table
+
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
 
         return render(
             request,
@@ -148,6 +127,73 @@ class EctoView(SingleItemView):
     template_name = 'gw2pc/ecto.html'
     depths = (1, 500, 1000, 2000, 3000, 4000, 5000)
     hilight_depth = 2000
+
+
+class MultiItemSetView(SingleItemView):
+    include_stack = False
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.items = {k:v for k,v in self.items_tuples}
+        self.item_ids = self.items.values()
+
+    def get_api_data(self):
+        self.api_data = get_tradingpost_api(self.item_ids)
+
+    def init_table(self):
+        table = MultiItemSetDepthRatioTable(api_data=self.api_data,
+                                            item_ids=self.item_ids,
+                                            ratios=self.ratios,
+                                            depths=self.depths)
+        return table
+
+    def init_item_table(self):
+        item_data = {}
+        for item in self.item_ids:
+            item_data[item] = {}
+            for depth in self.depths:
+                item_data[item][depth] = self.api_data[item].get_sell_price(depth)
+        item_table = {
+            'r1c1': {
+                'content': 'Item',
+            },
+            'columns': [{'key': x, 'content': f'Depth {x}'} for x in (self.depths)],
+            'rows': [{'content': e1, 'key': e2} for e1,e2 in self.items_tuples],
+            'hilight_cols': [250],
+            'data': item_data,
+            'row_first': True,
+            'row_link': 'gw2bltc',
+        }
+        item_table = MultiItemSetItemDepthTable(items_tuples=self.items_tuples,
+                                                   api_data=self.api_data,
+                                                   ratios=self.ratios,
+                                                   depths=self.depths)
+        return item_table
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        item_table = self.init_item_table().get_table()
+        item_table['hilight_cols'] = [self.hilight_depth]
+        context['item_table'] = item_table
+
+        return context
+
+
+class T6SetView(MultiItemSetView):
+    items_tuples = (
+        ('Blood',  24295),
+        ('Bones',  24358),
+        ('Claws',  24351),
+        ('Dust',   24277),
+        ('Fangs',  24357),
+        ('Scales', 24289),
+        ('Totems', 24300),
+        ('Venom',  24283),
+    )
+    hilight_depth = 250
+    depths = (1, 100, 250, 1000, 5000)
+    template_name = 'gw2pc/t6.html'
 
 
 def gw2pc_leg(request):

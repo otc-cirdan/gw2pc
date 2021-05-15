@@ -40,7 +40,7 @@ urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + 
     # straight up doesn't work with zappa, so we either need two `path` urls
     # (one with, one without), or a regex with an optional slash.
     re_path('^t6/?$',
-         views.gw2pc_t6,
+         views.T6SetView.as_view(),
          name='gw2pc_t6'),
     re_path('^mc/?$',
          views.MCView.as_view(),

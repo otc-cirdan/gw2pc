@@ -3,7 +3,7 @@
 {% load gw2pc_tags %}
 
 {% block title %}Price Check on a T6 Set{% endblock %}
-{% block metadesc %}As of {{ time }}, a T6 set is worth about {{ t6_set_table.data.90sell.250|format_gold_text }}{% endblock %}
+{% block metadesc %}As of {{ time }}, a T6 set is worth about {{ table.data.90sell.250|format_gold_text }}{% endblock %}
 {% block metatags %}price of a T6 set,value of a T6 set,guild wars 2{% endblock %}
 {% block extra_meta %}
     <link rel="canonical" href="https://gw2pc.com/t6/" />
@@ -13,7 +13,7 @@
     <p>Data valid as of {{ time }}</p>
     <div class="card-container single-result-card-container">
       <div class="mdc-card">
-        <h2 class="card-header">A T6 set is worth about {{ t6_set_table.data.90sell.250|format_gold }}</h2>
+        <h2 class="card-header">A T6 set is worth about {{ table.data.90sell.250|format_gold }}</h2>
         <ul>
           <li>This is based on 90% of the sell price (lowest listing) at a depth of 250.</li>
           <li>Most items in Guild Wars 2 are traded for around 90% of the sell price.</li>
@@ -25,11 +25,11 @@
     <div class="card-container debug-card-container">
       <div class="mdc-card">
         <h2 class="card-header">T6 Material Sell Prices</h2>
-        {% include 'includes/table.html' with table=t6_item_table %}
+        {% include 'includes/table.html' with table=item_table %}
       </div>
       <div class="mdc-card">
         <h2 class="card-header">T6 Set Pricing</h2>
-        {% include 'includes/table.html' with table=t6_set_table %}
+        {% include 'includes/table.html' with table=table %}
         <ul>
           <li>A buyer would pay 100% Buy to place a buy order and wait for it to fill.</li>
           <li>A buyer would pay 100% Sell to instantly buy from the trading post.</li>
