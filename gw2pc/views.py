@@ -148,22 +148,6 @@ class MultiItemSetView(SingleItemView):
         return table
 
     def init_item_table(self):
-        item_data = {}
-        for item in self.item_ids:
-            item_data[item] = {}
-            for depth in self.depths:
-                item_data[item][depth] = self.api_data[item].get_sell_price(depth)
-        item_table = {
-            'r1c1': {
-                'content': 'Item',
-            },
-            'columns': [{'key': x, 'content': f'Depth {x}'} for x in (self.depths)],
-            'rows': [{'content': e1, 'key': e2} for e1,e2 in self.items_tuples],
-            'hilight_cols': [250],
-            'data': item_data,
-            'row_first': True,
-            'row_link': 'gw2bltc',
-        }
         item_table = MultiItemSetItemDepthTable(items_tuples=self.items_tuples,
                                                    api_data=self.api_data,
                                                    ratios=self.ratios,

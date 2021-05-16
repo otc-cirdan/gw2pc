@@ -47,7 +47,6 @@ def format_gold_text_gs(value):
 def getitem(dictionary, key):
     return dictionary.get(key)
 
-@register.simple_tag
 def pctable_cell_classes(table, row=None, column=None):
     classes = []
     if 'hilight_rows' in table and row and row['key'] in table['hilight_rows']:
@@ -55,6 +54,7 @@ def pctable_cell_classes(table, row=None, column=None):
     if 'hilight_cols' in table and column and column['key'] in table['hilight_cols']:
         classes.append('price-table-hilight-col')
     return " ".join(classes)
+register.simple_tag(pctable_cell_classes)
 
 @register.filter
 def multiply(value, arg):
