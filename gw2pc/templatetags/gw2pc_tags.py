@@ -1,6 +1,6 @@
 from datetime import timedelta
 from django import template
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
 
 register = template.Library()
 
@@ -78,11 +78,8 @@ def render_cell(table, row, column):
     if 'format' in table and table['format'] == 'gs':
         format_gold_function = format_gold_text_gs
 
-
-    response = f"<td class='{classes}'>\n"
-    response += f"{format_gold_function(cell_val)}\n"
+    response = format_html("<td class='{}'>\n{}\n", classes, format_gold_function(cell_val))
     if 'include_stack' in table and table['include_stack']:
-        response += f"<br />{format_gold_function(cell_val*250)}\n"
-    response += "</td>"
-    return mark_safe(response)
-
+        response += format_html("<br />{}\n", format_gold_function(cell_val*250))
+    response += format_html("</td>")
+    return response
