@@ -222,8 +222,11 @@ def gw2pc_leg(request):
         sell_hilight_thresh = 450000
         sell_hilight_max = 3
         for depth in leg_item_depths:
-            leg_sell_data[item][depth] = {'val': api_data[item].get_sell_price(depth) * (85 / 100)}
-            if not sell_hilight_lock and depth != leg_sell_hilight and depth <= sell_hilight_max:
+            price = api_data[item].get_sell_price(depth)
+            if price is not None:
+                price = price * (85 / 100)
+            leg_sell_data[item][depth] = {'val': price}
+            if price and not sell_hilight_lock and depth != leg_sell_hilight and depth <= sell_hilight_max:
                 if leg_sell_data[item][depth]['val'] - leg_sell_data[item][leg_sell_hilight]['val'] > sell_hilight_thresh:
                     leg_sell_hilight = depth
                 else:
