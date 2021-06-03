@@ -1,4 +1,4 @@
-Django==3.2.3
+Django==3.2.4
 zappa==0.52.0
 libsass==0.20.1
 django-compressor==2.4.1
