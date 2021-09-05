@@ -39,6 +39,12 @@ urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + 
     # Ugly re_path URLs are basically required here because APPEND_SLASH just
     # straight up doesn't work with zappa, so we either need two `path` urls
     # (one with, one without), or a regex with an optional slash.
+    re_path('^t3/?$',
+         views.T3SetView.as_view(),
+         name='gw2pc_t3'),
+    re_path('^t4/?$',
+         views.T4SetView.as_view(),
+         name='gw2pc_t4'),
     re_path('^t6/?$',
          views.T6SetView.as_view(),
          name='gw2pc_t6'),

@@ -164,7 +164,46 @@ class MultiItemSetView(SingleItemView):
         return context
 
 
-class T6SetView(MultiItemSetView):
+class TierMatSetView(MultiItemSetView):
+    hilight_depth = 250
+    depths = (1, 100, 250, 1000, 5000)
+    template_name = 'gw2pc/t6.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['mat_tier'] = self.mat_tier
+        return context
+
+
+class T3SetView(TierMatSetView):
+    items_tuples = (
+        ('Blood',  24292),
+        ('Bones',  24344),
+        ('Claws',  24348),
+        ('Dust',   24274),
+        ('Fangs',  24354),
+        ('Scales', 24286),
+        ('Totems', 24298),
+        ('Venom',  24280),
+    )
+    mat_tier = 3
+
+
+class T4SetView(TierMatSetView):
+    items_tuples = (
+        ('Blood',  24293),
+        ('Bones',  24345),
+        ('Claws',  24349),
+        ('Dust',   24275),
+        ('Fangs',  24355),
+        ('Scales', 24287),
+        ('Totems', 24363),
+        ('Venom',  24281),
+    )
+    mat_tier = 4
+
+
+class T6SetView(TierMatSetView):
     items_tuples = (
         ('Blood',  24295),
         ('Bones',  24358),
@@ -175,9 +214,7 @@ class T6SetView(MultiItemSetView):
         ('Totems', 24300),
         ('Venom',  24283),
     )
-    hilight_depth = 250
-    depths = (1, 100, 250, 1000, 5000)
-    template_name = 'gw2pc/t6.html'
+    mat_tier = 6
 
 
 def gw2pc_leg(request):
