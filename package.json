@@ -6,7 +6,7 @@
   "homepage": "https://gw2pc.com",
   "dependencies": {
     "@material/theme": "^11.0.0",
-    "material-components-web": "^11.0.0",
+    "material-components-web": "^13.0.0",
     "sass": "^1.32.8"
   }
 }
