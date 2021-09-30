@@ -2,6 +2,6 @@ Django==3.2.7
 zappa==0.53.0
 libsass==0.20.1
 django-compressor==2.4.1
-django-sass-processor==1.0.1
+django-sass-processor==1.1
 django-s3-storage==0.13.4
 pylama==7.7.1
