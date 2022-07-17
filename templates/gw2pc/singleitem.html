@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load gw2pc_tags %}
+
+{% block title %}Price Check on {{ item_name }}{% endblock %}
+{% block metadesc %}As of {{ time }}, {{ item_name }} are worth about {{ hilight_price|format_gold_text }} each, or {{ hilight_price|multiply:250|format_gold_text }} per stack.{% endblock %}
+{% block metatags %}price of {{ item_name }}, value of {{ item_name }}, {{ item_name }}, guild wars 2{% endblock %}
+{% block extra_meta %}
+    <link rel="canonical" href="https://gw2pc.com/{{ url_path }}/" />
+{% endblock %}
+{% block content_title %}Price Check on {{ item_name }}{% endblock %}
+{% block content %}
+    <p>Data valid as of {{ time }}</p>
+    <div class="card-container single-result-card-container">
+      <div class="mdc-card">
+        <h2 class="card-header column-center-flex">
+          <div class="row-center-flex">One {{ item_name }} is worth ~{{ hilight_price|format_gold }}</div>
+          <div class="row-center-flex-with-top-padding"><img src="{{ item_icon }}" height="30px" width="30px"/></div>
+        </h2>
+        <ul>
+          <li>That's about {{ hilight_price|multiply:250|format_gold }} per stack.</li>
+          <li>This is based on 90% of the sell price at a depth of {{ hilight_depth }}.</li>
+          <li>However, be aware that this price is highly susceptible to fluctuations and manipulation, especially undercuts. Ensure that it is relatively stable by checking <a href="https://www.gw2bltc.com/en/item/{{ item_id }}" target="_blank">GW2BLTC</a>.</li>
+          <li>When looking at the sell price graph on GW2BLTC, you want the high point that the graph consistently returns to (which is the true resistance level), not the temporary lower spikes (which are caused by small undercuts).</li>
+          <li>See <a href="/docs/">our about prices page</a> for more information about item valuations.</li>
+        </ul>
+      </div>
+      <div class="mdc-card">
+        <h2 class="card-header column-center-flex">
+          <div class="row-center-flex">{{ item_name }} Prices</div>
+          <div class="row-center-flex-with-top-padding"><img src="{{ item_icon }}" height="30px" width="30px"/></div>
+        </h2>
+        {% include 'includes/table.html' with table=table %}
+      </div>
+    </div>
+{% endblock %}
