@@ -126,6 +126,7 @@ class T6SetView(TierMatSetView):
 class PrecursorWeaponView(BigMoneyWeaponView):
     template_description = "Precursor Weapon"
     sell_table_percentage = 90
+    url_path = "precursor"
     item_tuples = (
         ('Dawn',  29169),
         ('Dusk',  29185),
@@ -168,6 +169,7 @@ class PrecursorWeaponView(BigMoneyWeaponView):
 class LegendaryWeaponView(BigMoneyWeaponView):
     template_description = "Legendary Weapon"
     # sell_table_percentage = 85 # default
+    url_path = "leg"
     item_tuples = (
         ('Eternity',  30689),
         ('Sunrise',  30703),
