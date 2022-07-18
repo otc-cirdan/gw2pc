@@ -72,6 +72,7 @@ class BigMoneyWeaponView(View):
         
         context['template_description'] = self.template_description
         context['sell_table_percentage'] = self.sell_table_percentage
+        context['url_path'] = self.url_path
 
         return context
 
