@@ -2,36 +2,33 @@
 {% load humanize %}
 {% load gw2pc_tags %}
 
-{% block title %}Price Check on Legendary Weapons{% endblock %}
-{% block metadesc %}Legendary Weapons trade for about 85% of the lowest sell price, but may require more attention while making a deal to account for undercuts or buyouts.{% endblock %}
-{% block metatags %}price of Legendary Weapons,value of Legendary Weapons,guild wars 2{% endblock %}
+{% block title %}Price Check on {{ template_description }}s{% endblock %}
+{% block metadesc %}Legendary Weapons trade for about {{ sell_table_percentage }}% of the lowest sell price, but may require more attention while making a deal to account for undercuts or buyouts.{% endblock %}
+{% block metatags %}price of {{ template_description }}s,value of {{ template_description }}s,guild wars 2{% endblock %}
 {% block extra_meta %}
-    <link rel="canonical" href="https://gw2pc.com/legendary/" />
+    <link rel="canonical" href="https://gw2pc.com/{{ url_path }}/" />
 {% endblock %}
-{% block content_title %}Price Check on Legendary Weapons{% endblock %}
+{% block content_title %}Price Check on {{ template_description }}s{% endblock %}
 {% block content %}
     <p>Data valid as of {{ time }}</p>
     <div class="card-container single-result-card-container">
       <div class="mdc-card mdc-card-wide">
-        <h2 class="card-header">Legendary Weapons trade for about 85% of the lowest sell price.</h2>
+        <h2 class="card-header">{{ template_description }}s trade for about {{ sell_table_percentage }}% of the lowest sell price.</h2>
         <ul>
           <li>However, they may require more attention while making a deal to account for undercuts or buyouts.</li>
-          <li>There are many ways to acquire the materials needed to craft a legendary weapon more cheaply than the trading post. Trading a weapon at 85% for materials at 90% allows both sides to make a profit.</li>
           <li>Check the price history graph on GW2BLTC using the links in the table below to see where the sell price is most of the time. If it undercut rarely, and returns to the previous price quickly, then undercuts of 1-2 items
-            can be ignored. If the undercut is more persistent, or involves a larger quantity, then that lower price should be used for trading. Either way, multiply by 85%.</li>
-          <li>Occasionally, some weapons will trade at a higher price than 85%. This generally happens only with "meta" weapons - ones that are used in a lot of builds - and only if the buyer is motivated to buy. 86-87% is possible,
-            any higher is exceedingly rare.</li>
+            can be ignored. If the undercut is more persistent, or involves a larger quantity, then that lower price should be used for trading. Either way, multiply by {{ sell_table_percentage }}%.</li>
           <li>See <a href="/docs/">our about prices page</a> for more information about item valuations.</li>
         </ul>
       </div>
     </div>
     <div class="card-container debug-card-container">
       <div class="mdc-card">
-        <h2 class="card-header">Legendary Weapon Prices - 100% Buy Price</h2>
+        <h2 class="card-header">{{ template_description }} Prices - 100% Buy Price</h2>
         {% include 'includes/table.html' with table=leg_buy_table %}
       </div>
       <div class="mdc-card">
-        <h2 class="card-header">Legendary Weapon Prices - 85% Sell Price</h2>
+        <h2 class="card-header">{{ template_description }} Prices - {{ sell_table_percentage }}% Sell Price</h2>
         {% include 'includes/table.html' with table=leg_sell_table %}
       </div>
     </div>
