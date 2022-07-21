@@ -34,6 +34,39 @@ fork of the `sass` binary which does not support modern features. If you update
 CSS in `static/css/style.scss`, you will need to call the command shown in that
 update script in order to update the CSS file.
 
+## Setup
+### Dependencies
+* Python 3.8+
+* Pip3
+* Yarn/Npm
+
+If hitting problems with python install you might be missing the following:
+
+Linux:
+
+```bash
+sudo apt install python3-dev
+```
+
+Windows:
+
+https://visualstudio.microsoft.com/visual-cpp-build-tools/
+
+
+### Running
+```bash
+make install
+make build
+make run
+curl 127.0.0.1:8000
+```
+You can also over-write the default locations of the Makefile with the following environment variables. E.g.:
+```
+PYTHON=/opt/brew/bin/python3
+PIP=/opt/brew/bin/pip3
+YARN=/opt/brew/bin/yarn
+```
+
 # TODO
 * The current `views.py` discourages code reuse. It made sense while just
   outlining the project, but now that we have a few pages, they should be
