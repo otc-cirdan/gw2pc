@@ -44,7 +44,17 @@ def get_tradingpost_api(item_ids):
         # Well, that was easy
 
     return res
+    
+def get_item_api(item_ids):
+    r = requests.get('https://api.guildwars2.com/v2/items?ids=' + ','.join([str(x) for x in item_ids]))
+    r.raise_for_status()
+    data = r.json()
+    res = {}
 
+    for item in data:
+        res = {
+            'name': item['name'],
+            'icon': item['icon']
+        }
 
-
-
+    return res
