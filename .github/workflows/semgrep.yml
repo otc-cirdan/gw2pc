@@ -1,12 +1,13 @@
 name: Semgrep
 on:
-  pull_request: {}
+  pull_request:
+    branches:
+      - main
+      - master
   push:
     branches:
       - main
       - master
-    paths:
-      - .github/workflows/semgrep.yml
   schedule:
     - cron: '0 0 * * 0'
 jobs:
