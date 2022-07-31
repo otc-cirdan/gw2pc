@@ -1,9 +1,9 @@
 PYTHON?=/usr/bin/python3
-PIP?=/usr/bin/pip3
+PIPENV?=/usr/bin/pipenv
 YARN?=/usr/bin/yarn
 
 install:
-	$(PIP) install -r ./etc/requirements.txt
+	$(PIPENV) install -r ./etc/requirements.txt
 	$(YARN)
 
 build:

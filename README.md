@@ -37,8 +37,14 @@ update script in order to update the CSS file.
 ## Setup
 ### Dependencies
 * Python 3.8+
-* Pip3
+* Pipenv
 * Yarn/Npm
+
+### Initialize python environment
+```bash
+pipenv --python 3.8
+pipenv shell
+```
 
 If hitting problems with python install you might be missing the following:
 
@@ -63,7 +69,7 @@ curl 127.0.0.1:8000
 You can also over-write the default locations of the Makefile with the following environment variables. E.g.:
 ```
 PYTHON=/opt/brew/bin/python3
-PIP=/opt/brew/bin/pip3
+PIPENV=/opt/brew/bin/pipenv
 YARN=/opt/brew/bin/yarn
 ```
 
