@@ -1,7 +1,5 @@
 ![License](https://badgen.net/github/license/otc-cirdan/gw2pc)
 ![Last Commit](https://badgen.net/github/last-commit/otc-cirdan/gw2pc)
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=otc-cirdan/gw2pc)](https://dependabot.com)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/otc-cirdan/gw2pc.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/otc-cirdan/gw2pc/alerts/)
 
 # Guild Wars 2 Price Check
 Live price checks for Guild Wars 2 trading
