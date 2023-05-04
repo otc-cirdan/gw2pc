@@ -3,8 +3,9 @@
         "aws_region": "us-west-2",
         "django_settings": "gw2pc.dev_settings",
         "profile_name": "default",
+        "slim_handler": true,
+        "s3_bucket": "zappa-gw2pc-deploy",
         "project_name": "gw2pc",
-        "runtime": "python3.6",
         "domain": "dev.gw2pc.com",
         "aws_environment_variables": {
             "HOME": "/tmp",
@@ -14,8 +15,9 @@
         "aws_region": "us-west-2",
         "django_settings": "gw2pc.staging_settings",
         "profile_name": "default",
+        "slim_handler": true,
+        "s3_bucket": "zappa-gw2pc-deploy",
         "project_name": "gw2pc",
-        "runtime": "python3.6",
         "domain": "staging.gw2pc.com",
         "aws_environment_variables": {
             "HOME": "/tmp",
@@ -25,8 +27,9 @@
         "aws_region": "us-west-2",
         "django_settings": "gw2pc.prod_settings",
         "profile_name": "default",
+        "slim_handler": true,
+        "s3_bucket": "zappa-gw2pc-deploy",
         "project_name": "gw2pc",
-        "runtime": "python3.6",
         "domain": "gw2pc.com",
         "aws_environment_variables": {
             "HOME": "/tmp",
