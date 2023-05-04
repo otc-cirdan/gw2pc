@@ -1,5 +1,4 @@
 from gw2pc.view.SingleItemView import SingleItemView
-from gw2pc.view.ManagedSingleItemView import ManagedSingleItemView
 from gw2pc.view.TierMatSetView import TierMatSetView
 from gw2pc.view.BigMoneyWeaponView import BigMoneyWeaponView
 
@@ -15,57 +14,57 @@ class EctoView(SingleItemView):
     depths = (1, 500, 1000, 2000, 3000, 4000, 5000)
     hilight_depth = 2000
 
-class StabMatrixView(ManagedSingleItemView):
+class StabMatrixView(SingleItemView):
     item_id = 73248
     url_path = "matrix"
     depths = (1, 250, 500, 1000, 5000, 10000, 20000)
     hilight_depth = 1000
 
-class FractalEncryptionView(ManagedSingleItemView):
+class FractalEncryptionView(SingleItemView):
     item_id = 75919
     url_path = "encryption"
     depths = (1, 250, 500, 1000, 5000, 10000, 20000)
     hilight_depth = 1000
 
-class AssView(ManagedSingleItemView):
+class AssView(SingleItemView):
     item_id = 96978
     url_path = "ass"
     depths = (1, 50, 100, 250, 500, 1000)
     hilight_depth = 250
 
-class AmbergrisView(ManagedSingleItemView):
+class AmbergrisView(SingleItemView):
     item_id = 96347
     url_path = "ambergris"
 
-class PureJadeView(ManagedSingleItemView):
+class PureJadeView(SingleItemView):
     item_id = 97102
     url_path = "jade"
     
-class RunestoneView(ManagedSingleItemView):
+class RunestoneView(SingleItemView):
     item_id = 96722
     url_path = "runestone"
 
-class AureneMemoryView(ManagedSingleItemView):
+class AureneMemoryView(SingleItemView):
     item_id = 96088
     url_path = "aurene-memory"
 
-class MemoryOfBattleView(ManagedSingleItemView):
+class MemoryOfBattleView(SingleItemView):
     item_id = 71581
     url_path = "battle-memory"
 
-class ShardOfGloryView(ManagedSingleItemView):
+class ShardOfGloryView(SingleItemView):
     item_id = 70820
     url_path = "glory-shard"
     depths = (1, 250, 1000, 5000, 10000, 50000, 100000)
     hilight_depth = 5000
 
-class LamplighterBadgeView(ManagedSingleItemView):
+class LamplighterBadgeView(SingleItemView):
     item_id = 97790
     url_path = "lamplighter-badge"
     depths = (1, 50, 100, 250, 500)
     hilight_depth = 250
 
-class AmalgamatedGemstoneView(ManagedSingleItemView):
+class AmalgamatedGemstoneView(SingleItemView):
     item_id = 68063
     url_path = "amalgamated-gemstone"
 

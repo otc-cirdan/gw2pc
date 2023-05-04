@@ -5,11 +5,12 @@ from gw2pc.utils import get_tradingpost_api, get_item_api
 from gw2pc.view.DepthRatioTable import DepthRatioTable
 
 class SingleItemView(View):
-    depths = (1, 250, 1000, 2500, 10000)
+    depths = (1, 500, 1000, 2000, 3000, 4000, 5000)
     ratios = (('buy', 100), ('sell', 85), ('sell', 90), ('sell', 100))
     hilight_ratio = '90sell'
-    hilight_depth = 2500
+    hilight_depth = 2000
     include_stack = True
+    template_name = 'gw2pc/singleitem.html'
 
     def init_table(self):
         table = DepthRatioTable(api_data=self.api_data,
@@ -25,6 +26,10 @@ class SingleItemView(View):
     def get_context_data(self, **kwargs):
         context = {}
         context['time'] = timezone.now()
+
+        context['item_id'] = self.item_id
+        context['url_path'] = self.url_path
+
         self.get_api_data()
 
         table = self.init_table().get_table()
