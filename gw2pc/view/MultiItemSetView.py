@@ -1,9 +1,9 @@
 from gw2pc.utils import get_tradingpost_api
-from gw2pc.view.SingleItemView import SingleItemView
+from gw2pc.view.BaseItemView import BaseItemView
 from gw2pc.view.MultiItemSetDepthRatioTable import MultiItemSetDepthRatioTable
 from gw2pc.view.MultiItemSetItemDepthTable import MultiItemSetItemDepthTable
 
-class MultiItemSetView(SingleItemView):
+class MultiItemSetView(BaseItemView):
     include_stack = False
 
     def __init__(self, *args, **kwargs):

@@ -1,15 +1,10 @@
 from django.shortcuts import render
-from django.views import View
+from gw2pc.view.BaseItemView import BaseItemView
 from django.utils import timezone
 from gw2pc.utils import get_tradingpost_api, get_item_api
 from gw2pc.view.DepthRatioTable import DepthRatioTable
 
-class SingleItemView(View):
-    depths = (1, 500, 1000, 2000, 3000, 4000, 5000)
-    ratios = (('buy', 100), ('sell', 85), ('sell', 90), ('sell', 100))
-    hilight_ratio = '90sell'
-    hilight_depth = 2000
-    include_stack = True
+class SingleItemView(BaseItemView):
     template_name = 'gw2pc/singleitem.html'
 
     def init_table(self):
@@ -24,27 +19,9 @@ class SingleItemView(View):
         self.item_data = get_item_api([self.item_id])
 
     def get_context_data(self, **kwargs):
-        context = {}
-        context['time'] = timezone.now()
+        context = super().get_context_data(**kwargs)
 
         context['item_id'] = self.item_id
-        context['url_path'] = self.request.path
-
-        self.get_api_data()
-
-        table = self.init_table().get_table()
-
-        table['hilight_cols'] = [self.hilight_ratio]
-        table['hilight_rows'] = [self.hilight_depth]
-        table['include_stack'] = self.include_stack
-
-        context['table'] = table
-
-        context['hilight_depth'] = self.hilight_depth
-        context['hilight_price'] = table['data']['90sell'][self.hilight_depth]
-        if "item_data" in dir(self):
-            context['item_name'] = self.item_data['name']
-            context['item_icon'] = self.item_data['icon']
 
         return context
 
