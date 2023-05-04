@@ -28,7 +28,7 @@ class SingleItemView(View):
         context['time'] = timezone.now()
 
         context['item_id'] = self.item_id
-        context['url_path'] = self.url_path
+        context['url_path'] = self.request.path
 
         self.get_api_data()
 

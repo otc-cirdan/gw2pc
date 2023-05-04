@@ -6,7 +6,7 @@
 {% block metadesc %}As of {{ time }}, {{ item_name }} are worth about {{ hilight_price|format_gold_text }} each, or {{ hilight_price|multiply:250|format_gold_text }} per stack.{% endblock %}
 {% block metatags %}price of {{ item_name }}, value of {{ item_name }}, {{ item_name }}, guild wars 2{% endblock %}
 {% block extra_meta %}
-    <link rel="canonical" href="https://gw2pc.com/{{ url_path }}/" />
+    <link rel="canonical" href="https://gw2pc.com{{ url_path }}" />
 {% endblock %}
 {% block content_title %}Price Check on {{ item_name }}{% endblock %}
 {% block content %}

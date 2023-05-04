@@ -16,57 +16,46 @@ class EctoView(SingleItemView):
 
 class StabMatrixView(SingleItemView):
     item_id = 73248
-    url_path = "matrix"
     depths = (1, 250, 500, 1000, 5000, 10000, 20000)
     hilight_depth = 1000
 
 class FractalEncryptionView(SingleItemView):
     item_id = 75919
-    url_path = "encryption"
     depths = (1, 250, 500, 1000, 5000, 10000, 20000)
     hilight_depth = 1000
 
 class AssView(SingleItemView):
     item_id = 96978
-    url_path = "ass"
     depths = (1, 50, 100, 250, 500, 1000)
     hilight_depth = 250
 
 class AmbergrisView(SingleItemView):
     item_id = 96347
-    url_path = "ambergris"
 
 class PureJadeView(SingleItemView):
     item_id = 97102
-    url_path = "jade"
-    
+
 class RunestoneView(SingleItemView):
     item_id = 96722
-    url_path = "runestone"
 
 class AureneMemoryView(SingleItemView):
     item_id = 96088
-    url_path = "aurene-memory"
 
 class MemoryOfBattleView(SingleItemView):
     item_id = 71581
-    url_path = "battle-memory"
 
 class ShardOfGloryView(SingleItemView):
     item_id = 70820
-    url_path = "glory-shard"
     depths = (1, 250, 1000, 5000, 10000, 50000, 100000)
     hilight_depth = 5000
 
 class LamplighterBadgeView(SingleItemView):
     item_id = 97790
-    url_path = "lamplighter-badge"
     depths = (1, 50, 100, 250, 500)
     hilight_depth = 250
 
 class AmalgamatedGemstoneView(SingleItemView):
     item_id = 68063
-    url_path = "amalgamated-gemstone"
 
 class T3SetView(TierMatSetView):
     items_tuples = (
@@ -125,7 +114,6 @@ class T6SetView(TierMatSetView):
 class PrecursorWeaponView(BigMoneyWeaponView):
     template_description = "Precursor Weapon"
     sell_table_percentage = 90
-    url_path = "precursor"
     item_tuples = (
         ('Dawn',  29169),
         ('Dusk',  29185),
@@ -168,7 +156,6 @@ class PrecursorWeaponView(BigMoneyWeaponView):
 class LegendaryWeaponView(BigMoneyWeaponView):
     template_description = "Legendary Weapon"
     # sell_table_percentage = 85 # default
-    url_path = "leg"
     item_tuples = (
         ('Eternity',  30689),
         ('Sunrise',  30703),
