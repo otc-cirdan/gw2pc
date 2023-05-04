@@ -27,7 +27,7 @@ class BaseItemView(View):
         context['table'] = table
 
         context['hilight_depth'] = self.hilight_depth
-        context['hilight_price'] = table['data']['90sell'][self.hilight_depth]
+        context['hilight_price'] = table['data'][self.hilight_ratio][self.hilight_depth]
         if "item_data" in dir(self):
             context['item_name'] = self.item_data['name']
             context['item_icon'] = self.item_data['icon']

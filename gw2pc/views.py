@@ -6,6 +6,8 @@ from gw2pc.view.BigMoneyWeaponView import BigMoneyWeaponView
 class MCView(SingleItemView):
     item_id = 19976
     template_name = 'gw2pc/mc.html'
+    depths = (1, 250, 1000, 2500, 5000)
+    hilight_depth = 2500
     hilight_ratio = '100buy'
 
 class EctoView(SingleItemView):
