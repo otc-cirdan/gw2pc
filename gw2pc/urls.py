@@ -20,7 +20,12 @@ from django.views.generic import TemplateView
 
 from gw2pc import views
 
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
+
 urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
+    path('sentry-debug/', trigger_error),
     path('about/',
         TemplateView.as_view(template_name="gw2pc/about.html"),
         name='about'),
