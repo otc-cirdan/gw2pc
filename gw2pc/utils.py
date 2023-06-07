@@ -29,9 +29,22 @@ class ItemInfo(object):
                 return current_price
 
 
-def get_tradingpost_api(item_ids):
-    r = requests.get('https://api.guildwars2.com/v2/commerce/listings?ids=' + ','.join([str(x) for x in item_ids]))
+def get_with_retry(url):
+    success = False
+    attempts = 0
+    while not success and attempts < 3:
+        r = requests.get(url)
+        attempts += 1
+        if r.status_code in [200,]:
+            success = True
+
     r.raise_for_status()
+
+    return r
+
+
+def get_tradingpost_api(item_ids):
+    r = get_with_retry('https://api.guildwars2.com/v2/commerce/listings?ids=' + ','.join([str(x) for x in item_ids]))
     data = r.json()
     res = {}
     if isinstance(data, dict):
@@ -44,9 +57,9 @@ def get_tradingpost_api(item_ids):
         # Well, that was easy
 
     return res
-    
+
 def get_item_api(item_ids):
-    r = requests.get('https://api.guildwars2.com/v2/items?ids=' + ','.join([str(x) for x in item_ids]))
+    r = get_with_retry('https://api.guildwars2.com/v2/items?ids=' + ','.join([str(x) for x in item_ids]))
     r.raise_for_status()
     data = r.json()
     res = {}
