@@ -1,5 +1,5 @@
 Django==4.1.7
-zappa==0.56.1
+zappa==0.57.0
 libsass==0.21.0
 django-compressor==4.0
 django-sass-processor==1.2.1
