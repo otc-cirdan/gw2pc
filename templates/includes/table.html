@@ -16,6 +16,9 @@
             {% if table.row_link == "gw2bltc" %}
               <a href="https://www.gw2bltc.com/en/item/{{ row.key }}">
             {% endif %}
+            {% if table.row_link == "gw2wiki" %}
+              <a href="https://wiki.guildwars2.com/wiki/{{ row.key }}">
+            {% endif %}
           {% endif %}
           {{ row.content }}
           {% if table.row_link %}
