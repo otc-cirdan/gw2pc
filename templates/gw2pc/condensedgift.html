@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load gw2pc_tags %}
+
+{% block title %}Price Check on Gift of Condensed Might and Magic{% endblock %}
+{% block extra_meta %}
+    <link rel="canonical" href="https://gw2pc.com{{ url_path }}" />
+{% endblock %}
+{% block content_title %}Price Check on Gift of Condensed Might and Magic{% endblock %}
+{% block content %}
+    <p>Data valid as of {{ time }}</p>
+    <div class="card-container single-result-card-container">
+      <div class="mdc-card">
+        <h2 class="card-header column-center-flex">
+          <div class="row-center-flex">One Gift of Condensed Might is worth about ~{{ table.data.Gift_of_Condensed_Might.2000|format_gold }}</div>
+          <div class="row-center-flex">One Gift of Condensed Magic is worth about ~{{ table.data.Gift_of_Condensed_Magic.2000|format_gold }}</div>
+        </h2>
+        <ul>
+          <li>This is based on 90% of the sell price (lowest listing) at a depth of {{hilight_depth}}.</li>
+          <li>Most items in Guild Wars 2 are traded for around 90% of the sell price.</li>
+          <li>We use a depth of {{hilight_depth}} to ignore small quantities of an item listed at an undercut, which can happen accidentally or when someone wants an item to sell quickly.</li>
+          <li>See <a href="/docs/">our about prices page</a> for more information about item valuations.</li>
+        </ul>
+      </div>
+      <div class="mdc-card">
+        <h2 class="card-header column-center-flex">
+          <div class="row-center-flex">Gift of Condensed Might and Magic Prices</div>
+        </h2>
+        {% include 'includes/table.html' with table=table %}
+      </div>
+    </div>
+{% endblock %}

@@ -1,6 +1,7 @@
 from gw2pc.view.SingleItemView import SingleItemView
 from gw2pc.view.TierMatSetView import TierMatSetView
 from gw2pc.view.BigMoneyWeaponView import BigMoneyWeaponView
+from gw2pc.view.CraftedGiftItemView import CraftedGiftItemView
 
 
 class MCView(SingleItemView):
@@ -58,6 +59,23 @@ class LamplighterBadgeView(SingleItemView):
 
 class AmalgamatedGemstoneView(SingleItemView):
     item_id = 68063
+
+class AmalgamatedDraconicLodestone(SingleItemView):
+    item_id = 92687
+
+class CondensedGiftView(CraftedGiftItemView):
+    items_tuples = (
+        ('Gift of Claws',  [(24351, 100), (24350, 250), (24349, 50), (24348, 50)]),
+        ('Gift of Scales', [(24289, 100), (24288, 250), (24287, 50), (24286, 50)]),
+        ('Gift of Bones',  [(24358, 100), (24341, 250), (24345, 50), (24344, 50)]),
+        ('Gift of Fangs',  [(24357, 100), (24356, 250), (24355, 50), (24354, 50)]),
+        ('Gift of Blood',  [(24295, 100), (24294, 250), (24293, 50), (24292, 50)]),
+        ('Gift of Venom',  [(24283, 100), (24282, 250), (24281, 50), (24280, 50)]),
+        ('Gift of Totems', [(24300, 100), (24299, 250), (24363, 50), (24298, 50)]),
+        ('Gift of Dust',   [(24277, 100), (24276, 250), (24275, 50), (24274, 50)]),
+        ('Gift of Condensed Might', ['Gift of Claws', 'Gift of Scales', 'Gift of Bones', 'Gift of Fangs']),
+        ('Gift of Condensed Magic', ['Gift of Blood', 'Gift of Venom', 'Gift of Totems', 'Gift of Dust'])
+    )
 
 class T3SetView(TierMatSetView):
     items_tuples = (
