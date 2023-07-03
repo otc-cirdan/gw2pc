@@ -1,6 +1,4 @@
-from django.shortcuts import render
 from gw2pc.view.BaseItemView import BaseItemView
-from django.utils import timezone
 from gw2pc.utils import get_tradingpost_api, get_item_api
 from gw2pc.view.DepthRatioTable import DepthRatioTable
 
@@ -24,12 +22,3 @@ class SingleItemView(BaseItemView):
         context['item_id'] = self.item_id
 
         return context
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-
-        return render(
-            request,
-            self.template_name,
-            context,
-        )

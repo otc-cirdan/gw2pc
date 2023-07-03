@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from django.views import View
 from django.utils import timezone
-from gw2pc.utils import get_tradingpost_api, get_item_api
-from gw2pc.view.DepthRatioTable import DepthRatioTable
 
 class BaseItemView(View):
     depths = (1, 500, 1000, 2000, 3000, 4000, 5000)
