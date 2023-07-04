@@ -6,7 +6,7 @@ from gw2pc.view.CraftedGiftDepthRatioTable import CraftedGiftDepthRatioTable
 
 class CraftedGiftItemView(View):
     template_name = 'gw2pc/condensedgift.html'
-    depths = (1, 500, 1000, 2000, 3000, 4000, 5000)
+    depths = (250, 2000, 5000)
     ratios = (('buy', 100), ('sell', 85), ('sell', 90), ('sell', 100))
     hilight_ratio = '90sell'
     hilight_depth = 2000
