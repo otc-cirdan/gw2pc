@@ -61,6 +61,8 @@ class AmalgamatedGemstoneView(SingleItemView):
     item_id = 68063
 
 class AmalgamatedDraconicLodestone(SingleItemView):
+    depths = (50, 100, 250, 500)
+    hilight_depth = 100
     item_id = 92687
 
 class CondensedGiftView(CraftedGiftItemView):
