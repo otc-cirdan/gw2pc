@@ -107,4 +107,7 @@ urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + 
     re_path('^leg/?$',
         views.LegendaryWeaponView.as_view(),
         name='gw2pc_leg'),
+    re_path('^api/depth2csv/?$',
+        views.ApiDepthView.as_view(),
+        name='gw2pc_api_depth'),
 ]

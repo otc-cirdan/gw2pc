@@ -1,3 +1,8 @@
+from django.http import HttpResponse
+from django.views import View
+import csv
+
+from gw2pc.utils import get_tradingpost_api
 from gw2pc.view.SingleItemView import SingleItemView
 from gw2pc.view.TierMatSetView import TierMatSetView
 from gw2pc.view.BigMoneyWeaponView import BigMoneyWeaponView
@@ -105,7 +110,7 @@ class T4SetView(TierMatSetView):
         ('Venom',  24281),
     )
     mat_tier = 4
-    
+
 class T5SetView(TierMatSetView):
     items_tuples = (
         ('Blood',  24294),
@@ -217,3 +222,70 @@ class LegendaryWeaponView(BigMoneyWeaponView):
         ('Aurene\'s Wing',  97077),
         ('Aurene\'s Insight',  96652),
     )
+
+
+class ApiDepthView(View):
+    def get_context_data(self, **kwargs):
+        context = {}
+        self.item_ids = [int(x) for x in self.request.GET.get('items', "19721,19976").split(",")]
+        self.depths = [int(x) for x in self.request.GET.get('depths', "1,250,2000,10000").split(",")]
+
+        self.api_data = get_tradingpost_api(self.item_ids)
+
+        self.items = []
+
+        for item_id in self.item_ids:
+            item = {
+                'id': item_id,
+                'buy': {},
+                'sell': {},
+            }
+            for depth in self.depths:
+                item['buy'][depth] = self.api_data[item_id].get_price(
+                    depth=depth,
+                    buysell='buy',
+                )
+                item['sell'][depth] = self.api_data[item_id].get_price(
+                    depth=depth,
+                    buysell='sell',
+                )
+            self.items.append(item)
+
+        context['depths'] = self.depths
+        context['items'] = self.items
+
+        return context
+
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        fieldnames = [
+            "Item ID",
+        ]
+        for depth in context['depths']:
+            fieldnames.extend([
+                f"Buy {depth}",
+                f"Sell {depth}",
+            ])
+
+        response = HttpResponse(
+            content_type="text/csv",
+        )
+
+        writer = csv.DictWriter(
+            response,
+            fieldnames=fieldnames,
+        )
+        writer.writeheader()
+
+        for item in context['items']:
+            row = {
+                "Item ID": item['id'],
+            }
+            for depth in context['depths']:
+                row[f"Buy {depth}"] = item['buy'][depth]
+                row[f"Sell {depth}"] = item['sell'][depth]
+            writer.writerow(row)
+
+        return response
