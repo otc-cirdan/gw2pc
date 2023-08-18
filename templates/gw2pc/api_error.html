@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Guild Wars 2 API Offline{% endblock %}
+{% block metadesc %}GW2PC is unavailable because the API is offline.{% endblock %}
+{% block metatags %}guild wars 2 price check,guild wars 2 economy,guild wars 2 trading{% endblock %}
+{% block content_title %}Guild Wars 2 API Offline{% endblock %}
+{% block content %}
+  <h2>This service is unavailable because the Guild Wars 2 API is offline</h2>
+  <p>The API responded with the following information: <pre>{{ error_message }}</pre></p>
+  <p>Please monitor <a href="https://guildwars2.com">the official website</a> for more information.</p>
+{% endblock %}
+
