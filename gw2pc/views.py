@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.views import View
 import csv
+import requests
 
 from gw2pc.utils import get_tradingpost_api
 from gw2pc.view.SingleItemView import SingleItemView
@@ -286,6 +287,167 @@ class ApiDepthView(View):
             for depth in context['depths']:
                 row[f"Buy {depth}"] = item['buy'][depth]
                 row[f"Sell {depth}"] = item['sell'][depth]
+            writer.writerow(row)
+
+        return response
+
+
+class ApiAccountView(View):
+    def get_context_data(self, **kwargs):
+        context = {}
+        api_key = self.request.GET.get('access_token')
+        api_base = "https://api.guildwars2.com"
+        mats_res = requests.get(api_base+"/v2/account/materials?access_token="+api_key)
+        mats_res.raise_for_status()
+        bank_res = requests.get(api_base+"/v2/account/bank?access_token="+api_key)
+        bank_res.raise_for_status()
+        char_res = requests.get(api_base+"/v2/characters?ids=all&access_token="+api_key)
+        char_res.raise_for_status()
+
+        mats = mats_res.json()
+        bank = bank_res.json()
+        char = char_res.json()
+
+        items = []
+
+        for mat in mats:
+            items.append({'id': mat['id'], 'count': mat['count'], 'location': "Material Storage"})
+
+        bank_items = {}
+        for item in bank:
+            if item is None:
+                continue
+            if item['id'] not in bank_items:
+                bank_items[item['id']] = {'id': item['id'], 'count': 0}
+            bank_items[item['id']]['count'] += item['count']
+        for item in bank_items.values():
+            items.append({'id': item['id'], 'count': item['count'], 'location': "Bank"})
+
+        for character in char:
+            char_items = {}
+            for bag in character['bags']:
+                if bag is None:
+                    continue
+                for item in bag['inventory']:
+                    if item is None:
+                        continue
+                    if item['id'] not in char_items:
+                        char_items[item['id']] = {'id': item['id'], 'count': 0}
+                    char_items[item['id']]['count'] += item['count']
+            for item in char_items.values():
+                items.append({'id': item['id'], 'count': item['count'], 'location': character['name']})
+
+        iteminfo_res = requests.get("https://raw.githubusercontent.com/otc-cirdan/gw2-items/master/items.csv")
+        iteminfo_res.raise_for_status()
+
+        iteminfo = {}
+        for line in iteminfo_res.text.split("\n"):
+            cells = line.split(",")
+            if len(cells) >= 2:
+                try:
+                    iteminfo[int(cells[0])] = cells[1]
+                except ValueError:
+                    pass
+
+        for item in items:
+            if item['id'] in iteminfo:
+                item['name'] = iteminfo[item['id']]
+            else:
+                item['name'] = ""
+
+        context['items'] = items
+
+        return context
+
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        fieldnames = [
+            "Item ID",
+            "Name",
+            "Count",
+            "Location",
+        ]
+
+        response = HttpResponse(
+            content_type="text/csv",
+        )
+
+        writer = csv.DictWriter(
+            response,
+            fieldnames=fieldnames,
+        )
+        writer.writeheader()
+
+        for item in context['items']:
+            row = {
+                "Item ID": item['id'],
+                "Name": item['name'],
+                "Count": item['count'],
+                "Location": item['location'],
+            }
+            writer.writerow(row)
+
+        return response
+
+
+class ApiWalletView(View):
+    def get_context_data(self, **kwargs):
+        context = {}
+        api_key = self.request.GET.get('access_token')
+        api_base = "https://api.guildwars2.com"
+        wallet_res = requests.get(api_base+"/v2/account/wallet?access_token="+api_key)
+        wallet_res.raise_for_status()
+
+        wallet = wallet_res.json()
+
+        res = requests.get("https://api.guildwars2.com/v2/currencies?ids=all")
+        res.raise_for_status()
+        currencies = res.json()
+        currency_lookup = {x['id']:x for x in currencies}
+        items = []
+
+        for mat in wallet:
+            items.append({
+                'id': mat['id'],
+                'count': mat['value'],
+                'name': currency_lookup[mat['id']]['name'],
+                'location': "Wallet",
+            })
+
+        context['items'] = items
+
+        return context
+
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+
+        fieldnames = [
+            "Item ID",
+            "Name",
+            "Count",
+            "Location",
+        ]
+
+        response = HttpResponse(
+            content_type="text/csv",
+        )
+
+        writer = csv.DictWriter(
+            response,
+            fieldnames=fieldnames,
+        )
+        writer.writeheader()
+
+        for item in context['items']:
+            row = {
+                "Item ID": item['id'],
+                "Name": item['name'],
+                "Count": item['count'],
+                "Location": item['location'],
+            }
             writer.writerow(row)
 
         return response

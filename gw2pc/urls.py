@@ -110,4 +110,10 @@ urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + 
     re_path('^api/depth2csv/?$',
         views.ApiDepthView.as_view(),
         name='gw2pc_api_depth'),
+    re_path('^api/account2csv/?$',
+        views.ApiAccountView.as_view(),
+        name='gw2pc_api_account'),
+    re_path('^api/wallet2csv/?$',
+        views.ApiWalletView.as_view(),
+        name='gw2pc_api_wallet'),
 ]
