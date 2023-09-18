@@ -40,6 +40,8 @@ class AssView(SingleItemView):
 
 class AmbergrisView(SingleItemView):
     item_id = 96347
+    depths = (1, 50, 100, 250, 500, 1000)
+    hilight_depth = 250
 
 class PureJadeView(SingleItemView):
     item_id = 97102
