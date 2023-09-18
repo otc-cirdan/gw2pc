@@ -305,10 +305,13 @@ class ApiAccountView(View):
         bank_res.raise_for_status()
         char_res = requests.get(api_base+"/v2/characters?ids=all&access_token="+api_key)
         char_res.raise_for_status()
+        delv_res = requests.get(api_base+"/v2/commerce/delivery?access_token="+api_key)
+        delv_res.raise_for_status()
 
         mats = mats_res.json()
         bank = bank_res.json()
         char = char_res.json()
+        delv = delv_res.json()
 
         items = []
 
@@ -338,6 +341,37 @@ class ApiAccountView(View):
                     char_items[item['id']]['count'] += item['count']
             for item in char_items.values():
                 items.append({'id': item['id'], 'count': item['count'], 'location': character['name']})
+
+        delv_items = {}
+        for item in delv['items']:
+            if item is None:
+                continue
+            if item['id'] not in delv_items:
+                delv_items[item['id']] = {'id': item['id'], 'count': 0}
+            delv_items[item['id']]['count'] += item['count']
+        for item in delv_items.values():
+            items.append({'id': item['id'], 'count': item['count'], 'location': "TP Delivery Box"})
+
+        sell_items = {}
+        page = 0
+        while True:
+            sell_res = requests.get(api_base+"/v2/commerce/transactions/current/sells?access_token="+api_key+"&page="+str(page))
+            if sell_res.status_code != 200:
+                break
+            sell_res.raise_for_status()
+            sell = sell_res.json()
+            if sell and isinstance(sell, list):
+                for item in sell:
+                    if item is None:
+                        continue
+                    if item['item_id'] not in sell_items:
+                        sell_items[item['item_id']] = {'id': item['item_id'], 'count': 0}
+                    sell_items[item['item_id']]['count'] += item['quantity']
+                page += 1
+            else:
+                break
+        for item in sell_items.values():
+            items.append({'id': item['id'], 'count': item['count'], 'location': "TP Sells"})
 
         iteminfo_res = requests.get("https://raw.githubusercontent.com/otc-cirdan/gw2-items/master/items.csv")
         iteminfo_res.raise_for_status()
