@@ -32,6 +32,39 @@ fork of the `sass` binary which does not support modern features. If you update
 CSS in `static/css/style.scss`, you will need to call the command shown in that
 update script in order to update the CSS file.
 
+## Setup
+### Dependencies
+* Python 3.8+
+* Pipenv
+* Yarn/Npm
+
+### Initialize python environment
+```bash
+pipenv --python 3.8
+pipenv shell
+```
+
+If hitting problems with python install you might be missing the following:
+
+Linux:
+
+```bash
+sudo apt install python3-dev
+```
+
+Windows:
+
+https://visualstudio.microsoft.com/visual-cpp-build-tools/
+
+
+### Running
+```bash
+make install
+make build
+make run
+curl 127.0.0.1:8000
+```
+
 # TODO
 * The current `views.py` discourages code reuse. It made sense while just
   outlining the project, but now that we have a few pages, they should be

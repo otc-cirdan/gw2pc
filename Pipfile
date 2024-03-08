@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==4.0.6"
+zappa = "==0.54.2"
+libsass = "==0.21.0"
+django-compressor = "==4.0"
+django-sass-processor = "==1.2.1"
+django-s3-storage = "==0.13.7"
+pylama = "==8.3.8"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
