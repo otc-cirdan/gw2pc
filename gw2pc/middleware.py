@@ -8,14 +8,19 @@ class GuildWars2APIMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        return self.get_response(request)
+
+    def process_view(self, request, *args, **kwargs):
         whitelist = (
-            '/',
-            '/about/',
-            '/docs/',
+            'gw2pc_homepage',
+            'about',
+            'docs',
+            'sitemap',
+            'robots.txt',
         )
 
-        if request.path not in whitelist:
-            api_response = requests.get("https://api.guildwars2.com" + request.path)
+        if request.resolver_match.url_name not in whitelist:
+            api_response = requests.get("https://api.guildwars2.com")
 
             if api_response.status_code == 503:
                 # Extract error message using regex
@@ -31,5 +36,3 @@ class GuildWars2APIMiddleware:
                     context,
                     status=503,
                 )
-
-        return self.get_response(request)
